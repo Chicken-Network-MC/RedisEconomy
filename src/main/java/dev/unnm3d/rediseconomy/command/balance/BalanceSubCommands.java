@@ -6,6 +6,7 @@ import dev.unnm3d.rediseconomy.currency.Currency;
 import dev.unnm3d.rediseconomy.utils.DecimalUtils;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -72,9 +73,10 @@ public class BalanceSubCommands extends BalanceCommand {
             return;
         }
         EconomyResponse er = currency.depositPlayer(target, amount, reason);
-        if (er.transactionSuccess())
-            plugin.langs().send(sender, plugin.langs().balanceSet.replace("%balance%", currency.format(er.balance)).replace("%player%", target));
-        else sender.sendMessage(er.errorMessage);
+        if (er.transactionSuccess()) {
+            if (!(sender instanceof ConsoleCommandSender))
+                plugin.langs().send(sender, plugin.langs().balanceSet.replace("%balance%", currency.format(er.balance)).replace("%player%", target));
+        } else sender.sendMessage(er.errorMessage);
     }
 
     @Override

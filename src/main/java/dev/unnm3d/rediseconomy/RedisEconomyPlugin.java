@@ -14,17 +14,16 @@ import dev.unnm3d.rediseconomy.config.ConfigManager;
 import dev.unnm3d.rediseconomy.config.Langs;
 import dev.unnm3d.rediseconomy.config.Settings;
 import dev.unnm3d.rediseconomy.currency.CurrenciesManager;
+import dev.unnm3d.rediseconomy.hook.HookManager;
 import dev.unnm3d.rediseconomy.migrators.*;
 import dev.unnm3d.rediseconomy.redis.RedisKeys;
 import dev.unnm3d.rediseconomy.redis.RedisManager;
 import dev.unnm3d.rediseconomy.utils.AdventureWebuiEditorAPI;
 import dev.unnm3d.rediseconomy.utils.Metrics;
-import dev.unnm3d.rediseconomy.utils.PlaceholderAPIHook;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -52,6 +51,8 @@ public final class RedisEconomyPlugin extends JavaPlugin {
     private ConfigManager configManager;
     @Getter
     private CurrenciesManager currenciesManager;
+    @Getter
+    private HookManager hookManager;
     private RedisManager redisManager;
     @Nullable
     @Getter
@@ -158,23 +159,28 @@ public final class RedisEconomyPlugin extends JavaPlugin {
         MainCommand mainCommand = new MainCommand(this, new AdventureWebuiEditorAPI(settings().webEditorUrl));
         loadCommand("rediseconomy", mainCommand, mainCommand);
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PlaceholderAPIHook(this).register();
-        }
+        this.hookManager = new HookManager(this);
+        this.hookManager.enable();
 
         new Metrics(this, 16802);
     }
 
     @Override
     public void onDisable() {
+        if (hookManager != null)
+            hookManager.disable();
+
         if (playerListManager != null)
             playerListManager.stop();
+
         if (redisManager != null)
             redisManager.close();
+
         if (currenciesManager != null) {
             this.getServer().getServicesManager().unregister(Economy.class, currenciesManager.getDefaultCurrency());
             currenciesManager.terminate();
         }
+
         getLogger().info("RedisEconomy disabled successfully!");
     }
 

@@ -1,9 +1,10 @@
-package dev.unnm3d.rediseconomy.utils;
+package dev.unnm3d.rediseconomy.hook.impl;
 
 import dev.unnm3d.rediseconomy.RedisEconomyPlugin;
 import dev.unnm3d.rediseconomy.config.Langs;
 import dev.unnm3d.rediseconomy.currency.CurrenciesManager;
 import dev.unnm3d.rediseconomy.currency.Currency;
+import dev.unnm3d.rediseconomy.hook.Hook;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.expansion.Relational;
 import net.milkbowl.vault.chat.Chat;
@@ -15,8 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DecimalFormat;
 import java.util.*;
 
-
-public class PlaceholderAPIHook extends PlaceholderExpansion implements Relational {
+public class PlaceholderAPIHook extends PlaceholderExpansion implements Relational, Hook {
 
     private final CurrenciesManager currenciesManager;
     private final Langs langs;
@@ -220,4 +220,15 @@ public class PlaceholderAPIHook extends PlaceholderExpansion implements Relation
         }
         return onRequest(one, params);
     }
+
+    @Override
+    public void enable() {
+        this.register();
+    }
+
+    @Override
+    public void disable() {
+        // Nothing to do
+    }
+
 }
