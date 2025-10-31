@@ -51,6 +51,8 @@ public class Currency implements Economy {
     private double transactionTax;
     @Getter
     private final boolean taxOnlyPay;
+    @Getter
+    private final boolean payEnabled;
     protected final List<ExecutorService> updateExecutors;
 
 
@@ -74,6 +76,7 @@ public class Currency implements Economy {
         this.transactionsTTL = currencySettings.getTransactionsTTL();
         this.transactionTax = currencySettings.getPayTax();
         this.taxOnlyPay = currencySettings.isTaxOnlyPay();
+        this.payEnabled = currencySettings.isPayEnabled();
         this.accounts = new ConcurrentHashMap<>();
         this.maxPlayerBalances = new ConcurrentHashMap<>();
         this.decimalFormat = new DecimalFormat(

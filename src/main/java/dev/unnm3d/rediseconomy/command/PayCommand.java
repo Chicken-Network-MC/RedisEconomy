@@ -6,7 +6,6 @@ import dev.unnm3d.rediseconomy.currency.Currency;
 import dev.unnm3d.rediseconomy.utils.DecimalUtils;
 import lombok.AllArgsConstructor;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -78,6 +77,12 @@ public class PayCommand implements CommandExecutor, TabCompleter {
             plugin.langs().send(sender, plugin.langs().tooSmallAmount);
             return;
         }
+
+        if (!currency.isPayEnabled()) {
+            plugin.langs().send(sender, plugin.langs().payDisabled);
+            return;
+        }
+
         if (target.equalsIgnoreCase(sender.getName())) {
             plugin.langs().send(sender, plugin.langs().paySelf);
             return;

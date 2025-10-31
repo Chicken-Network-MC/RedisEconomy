@@ -58,7 +58,7 @@ public class Settings {
             "Bank enable is to enable the bank feature on Vault API Economy class (which is extended by Currency class)",
             "Executor threads are the number of threads to use for executing balance updates on this currency (optimal is 3)"
     })
-    public List<CurrencySettings> currencies = List.of(new CurrencySettings("vault", "euro", "euros", "#.##", "en-US", 0, 100000000000000d, 0, true, -1, true, false, 3), new CurrencySettings("dollar", "$", "$", "#.##", "en-US", 0, 100000000000000d, 0, false, -1, false, false, 2));
+    public List<CurrencySettings> currencies = List.of(new CurrencySettings("vault", "euro", "euros", "#.##", "en-US", 0, 100000000000000d, 0, true, -1, true, false, true, 3), new CurrencySettings("dollar", "$", "$", "#.##", "en-US", 0, 100000000000000d, 0, false, -1, false, false, false, 2));
 
 
     public record RedisSettings(String host, int port, String user, String password, int database, int timeout,

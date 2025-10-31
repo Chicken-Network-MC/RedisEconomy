@@ -22,5 +22,6 @@ public final class CurrencySettings {
     public int transactionsTTL;
     public boolean bankEnabled;
     public boolean taxOnlyPay;
+    public boolean payEnabled;
     public int executorThreads;
 }
